@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "../../server/api";
 import { StyledAuth } from "./styled";
@@ -8,6 +8,12 @@ export const Login = () => {
     const [password, setPassword] = useState("");
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (localStorage.getItem("token")) {
+            navigate("/todo");
+        }
+    }, [navigate]);
 
     const emailValidation =
         /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
@@ -25,6 +31,7 @@ export const Login = () => {
                 .then((response) => {
                     if (response.status === 200) {
                         localStorage.setItem("token", response.data["access_token"]);
+                        navigate("/todo");
                     }
                 })
                 .catch(({ response }) => {
