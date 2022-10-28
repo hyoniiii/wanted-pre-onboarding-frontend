@@ -23,3 +23,8 @@ AWS S3 정적 웹호스팅을 이용하여 배포하였으며, 어플리케이�
 - HTTP Client 라이브러리 `Axios`
 - 스타일링 관련 라이브러리 `Styled Components`
 - 아이콘 등 UI 관련 라이브러리 `React-Icons`
+
+# ❗️리팩토링
+- custom hook 사용 (22.10.28)
+  - useInput
+

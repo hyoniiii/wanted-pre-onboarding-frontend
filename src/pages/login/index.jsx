@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "../../server/api";
 import { StyledAuth } from "./styled";
+import useInput from "../../hooks/useInput";
 
 export const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const email = useInput();
+    const password = useInput();
+
+    const emailValue = email.value;
+    const passwordValue = password.value;
 
     const navigate = useNavigate();
 
@@ -19,13 +23,13 @@ export const Login = () => {
         /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
     const account = {
-        email: email,
-        password: password,
+        email: emailValue,
+        password: passwordValue,
     };
 
     const loginStatus = (e) => {
         e.preventDefault();
-        if (emailValidation.test(email)) {
+        if (emailValidation.test(emailValue)) {
             authAPI
                 .signin(account)
                 .then((response) => {
@@ -53,27 +57,26 @@ export const Login = () => {
                 <label>Email</label>
                 <input
                     type={"text"}
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    id="email"
+                    {...email}
                     placeholder="이메일"
                     required
                 />
                 <label>Password</label>
                 <input
                     type={"password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    id="password"
+                    {...password}
                     placeholder="비밀번호"
                     required
                 />
-                {emailValidation.test(email) && password.length >= 8 ? (
+                {emailValidation.test(emailValue) && passwordValue.length >= 8 ? (
                     <button type="submit">로그인</button>
                 ) : (
                     <button disabled>로그인</button>
                 )}
                 <span onClick={() => navigate("/signup")}>회원가입하기</span>
             </form>
-
         </StyledAuth>
     );
 };
